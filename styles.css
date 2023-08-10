@@ -66,6 +66,10 @@ body {
   }
   
   p {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 25px;
+    font-weight: 600;
     display: block;
     margin: 0;
     width: 100%;

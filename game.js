@@ -4,11 +4,16 @@ const btnUp = document.querySelector('#up');
 const btnDown = document.querySelector('#down');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
+const spanLives = document.querySelector('#lives');
+const spanTime = document.querySelector('#time');
 let canvasSize;
 let elementSize;
 let level = 0;
 let lives = 3;
 
+let timeStart;
+let timePlayer;
+let timeInterval;
 
 const playerPosition = {
     x: undefined,
@@ -40,6 +45,7 @@ function setCanvasSize(){
 }
 
 function startGame(){
+
     game.font = elementSize + 'px Verdana';
     game.textAlign = 'end';
 
@@ -51,6 +57,12 @@ function startGame(){
         gameWin();
         return;
     }
+    if(!timeStart){
+        timeStart = Date.now();
+        timeInterval = setInterval( showTime,100)
+    }
+
+    showLives();
 
     const mapRows = map.trim().split('\n');
     const mapRowsCols = mapRows.map((row) => row.trim().split(''));
@@ -120,6 +132,7 @@ function levelFail(){
     if(lives <= 0){
         level = 0;
         lives = 3;
+        timeStart = undefined;
     }
     playerPosition.x = undefined;
     playerPosition.y = undefined;
@@ -130,8 +143,20 @@ function levelFail(){
 
 function gameWin (){
     console.log('Juego Terminado - Ganaste!');
+    clearInterval(timeInterval);
 }
 
+function showLives(){
+
+    spanLives.innerHTML = "";
+    for (let i = 0; i<lives; i++){
+        spanLives.append(emojis['HEART']);
+    }
+}
+
+function showTime(){
+    spanTime.innerHTML = Date.now() - timeStart;
+}
 
 window.addEventListener('keydown', moveByKeys )
 btnUp.addEventListener('click', moveUp);
