@@ -82,18 +82,30 @@ function moveByKeys(event){
 }
 
 function moveUp(){
-    playerPosition.y -= elementSize;
+    let posActual = playerPosition.y - elementSize;
+    if(posActual>=elementSize){
+        playerPosition.y -= elementSize;
+    }
     startGame();
 }
 function moveDown(){
-    playerPosition.y += elementSize;
-    startGame();
+    let posActual = playerPosition.y + elementSize;
+    if(posActual<=canvasSize){
+        playerPosition.y += elementSize;
+        startGame();
+    }
 }
 function moveLeft(){
-    playerPosition.x -= elementSize;
-    startGame();
+    let posActual = playerPosition.x - elementSize;
+    if(posActual>=elementSize){
+        playerPosition.x -= elementSize;
+        startGame();
+    }
 }
 function moveRight(){
-    playerPosition.x += elementSize;
-    startGame();
+    let posActual = playerPosition.x + elementSize;
+    if(posActual<=canvasSize){
+        playerPosition.x += elementSize;
+        startGame();
+    }
 }
