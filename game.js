@@ -6,6 +6,9 @@ const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
+const spanRecord = document.querySelector('#record');
+const pResult = document.querySelector('#result');
+
 let canvasSize;
 let elementSize;
 let level = 0;
@@ -59,7 +62,8 @@ function startGame(){
     }
     if(!timeStart){
         timeStart = Date.now();
-        timeInterval = setInterval( showTime,100)
+        timeInterval = setInterval( showTime,100);
+        showRecord();
     }
 
     showLives();
@@ -99,8 +103,8 @@ function startGame(){
 
 function movePlayer(){
 
-    const giftColisionX = Math.round(playerPosition.x) == Math.round(giftPosition.x);
-    const giftColisionY = Math.round(playerPosition.y) == Math.round(giftPosition.y);
+    const giftColisionX = playerPosition.x.toFixed() == giftPosition.x.toFixed();
+    const giftColisionY = playerPosition.y.toFixed() == giftPosition.y.toFixed();
     const giftColision = giftColisionX && giftColisionY;
 
     if (giftColision){
@@ -144,6 +148,22 @@ function levelFail(){
 function gameWin (){
     console.log('Juego Terminado - Ganaste!');
     clearInterval(timeInterval);
+
+    const recordTime = localStorage.getItem('record_time');
+    const playerTime = Date.now() - timeStart;
+
+    if(recordTime){
+        const playerTime = Date.now() - timeStart;
+        if(recordTime >= playerTime){
+            localStorage.setItem('record_time', playerTime);
+            pResult.innerHTML = 'SUPERASTE EL RECORD';
+        }else {
+            pResult.innerHTML = 'Lo siento, no superaste el record';
+        }
+    }else{
+        localStorage.setItem('record_time', playerTime);
+    }
+    console.log({recordTime, playerTime});
 }
 
 function showLives(){
@@ -156,6 +176,10 @@ function showLives(){
 
 function showTime(){
     spanTime.innerHTML = Date.now() - timeStart;
+}
+
+function showRecord(){
+    spanRecord.innerHTML = localStorage.getItem('record_time');
 }
 
 window.addEventListener('keydown', moveByKeys )
@@ -177,8 +201,8 @@ function moveByKeys(event){
 }
 
 function moveUp(){
-    let posActual = playerPosition.y - elementSize;
-    if(posActual>=elementSize){
+    let posActual = playerPosition.y.toFixed(2) - elementSize;
+    if(posActual>= elementSize){
         playerPosition.y -= elementSize;
     }
     startGame();
